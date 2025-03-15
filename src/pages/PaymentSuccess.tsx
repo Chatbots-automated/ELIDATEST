@@ -1,119 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, ArrowLeft, Package, Calendar, CreditCard, Loader2 } from 'lucide-react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { verifyPayment } from '../services/paymentService';
-import { useStore } from '../store/useStore';
-
-interface PaymentDetails {
-  reference: string;
-  amount: string;
-  email: string;
-  name: string;
-  date: string;
-}
+import { CheckCircle, ArrowLeft, ShoppingBag } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function PaymentSuccess() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { clearCart } = useStore();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
-
-  useEffect(() => {
-    const verifyTransaction = async () => {
-      const transactionId = searchParams.get('payment_reference');
-      
-      if (!transactionId) {
-        setError('No transaction ID found');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        const isValid = await verifyPayment(transactionId);
-        
-        if (isValid) {
-          // Clear the cart after successful payment
-          clearCart();
-
-          // Collect payment details from URL parameters
-          const details: PaymentDetails = {
-            reference: searchParams.get('reference') || '',
-            amount: searchParams.get('amount') || '',
-            email: searchParams.get('email') || '',
-            name: searchParams.get('name') || '',
-            date: new Date().toISOString()
-          };
-
-          setPaymentDetails(details);
-
-          // Send webhook to Make.com
-          await fetch("https://hook.eu2.make.com/cpw4ynt56urvf97eb2l9ap1rsm67hef2", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              transactionId,
-              status: "COMPLETED",
-              ...details,
-              message: "Payment completed successfully"
-            }),
-          });
-        } else {
-          setError('Payment verification failed');
-          navigate('/payment-failed');
-        }
-      } catch (error) {
-        console.error('Error verifying payment:', error);
-        setError('An error occurred while verifying the payment');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    verifyTransaction();
-  }, [navigate, clearCart, searchParams]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-elida-cream flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
-          <Loader2 className="h-12 w-12 text-elida-gold animate-spin mx-auto mb-4" />
-          <h2 className="text-2xl font-playfair text-gray-900 mb-4">
-            Apdorojamas mokėjimas
-          </h2>
-          <p className="text-gray-600">
-            Prašome palaukti, kol patikrinsime jūsų mokėjimą...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-elida-cream flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
-          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Package className="h-12 w-12 text-red-500" />
-          </div>
-          <h2 className="text-2xl font-playfair text-gray-900 mb-4">
-            {error}
-          </h2>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-elida-gold to-elida-accent text-white rounded-full font-medium hover:shadow-lg transition-all duration-300"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            Grįžti į pagrindinį puslapį
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-elida-cream flex items-center justify-center p-4">
       <motion.div
@@ -129,7 +19,7 @@ export default function PaymentSuccess() {
           Grįžti į pagrindinį puslapį
         </Link>
 
-        <div className="bg-white rounded-2xl shadow-xl p-12">
+        <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -139,57 +29,38 @@ export default function PaymentSuccess() {
             <CheckCircle className="h-12 w-12 text-green-500" />
           </motion.div>
 
-          <h2 className="text-2xl font-playfair text-gray-900 mb-4 text-center">
-            Mokėjimas sėkmingas!
+          <h2 className="text-2xl font-playfair text-gray-900 mb-4">
+            Ačiū už jūsų užsakymą!
           </h2>
           
-          <p className="text-gray-600 mb-8 text-center">
-            Jūsų užsakymas buvo sėkmingai apmokėtas. Netrukus gausite patvirtinimo el. laišką.
+          <p className="text-gray-600 mb-8">
+            Jūsų užsakymas buvo sėkmingai apmokėtas. Netrukus gausite patvirtinimo el. laišką su detalia informacija apie jūsų užsakymą.
           </p>
 
-          {paymentDetails && (
-            <div className="bg-gray-50 rounded-xl p-6 mb-8 space-y-4">
-              <div className="flex items-center justify-between text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Package className="h-5 w-5 text-elida-gold" />
-                  <span>Užsakymo numeris:</span>
-                </div>
-                <span className="font-medium text-gray-900">{paymentDetails.reference}</span>
-              </div>
-
-              <div className="flex items-center justify-between text-gray-600">
-                <div className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5 text-elida-gold" />
-                  <span>Suma:</span>
-                </div>
-                <span className="font-medium text-gray-900">€{paymentDetails.amount}</span>
-              </div>
-
-              <div className="flex items-center justify-between text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-elida-gold" />
-                  <span>Data:</span>
-                </div>
-                <span className="font-medium text-gray-900">
-                  {new Date(paymentDetails.date).toLocaleDateString('lt-LT')}
-                </span>
-              </div>
-            </div>
-          )}
+          <div className="bg-gray-50 rounded-xl p-6 mb-8 text-left">
+            <p className="text-sm text-gray-600 mb-4">
+              Jei turite klausimų apie savo užsakymą, susisiekite su mumis:
+            </p>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>El. paštas: info@elida.lt</li>
+              <li>Tel.: (8-644) 40596</li>
+            </ul>
+          </div>
 
           <div className="space-y-4">
             <Link
-              to="/profile"
+              to="/products"
               className="block w-full py-3 bg-gradient-to-r from-elida-gold to-elida-accent text-white rounded-xl font-medium 
-                       hover:shadow-lg transition-all duration-300 text-center"
+                       hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
             >
-              Peržiūrėti užsakymus
+              <ShoppingBag className="h-5 w-5" />
+              Tęsti apsipirkimą
             </Link>
 
             <Link
               to="/"
               className="block w-full py-3 bg-white text-elida-gold border border-elida-gold/20 rounded-xl font-medium 
-                       hover:bg-elida-gold/5 transition-all duration-300 text-center"
+                       hover:bg-elida-gold/5 transition-all duration-300"
             >
               Grįžti į pagrindinį puslapį
             </Link>
