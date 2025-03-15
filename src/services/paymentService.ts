@@ -39,9 +39,9 @@ export const createTransaction = async ({
     const encodedCredentials = btoa(credentials);
 
     // ✅ Use correct production URLs with methods
-    const returnUrl = { url: `https://elida.lt/payment-success?reference=${reference}&amount=${amount}&email=${email}`, method: "GET" };
-    const cancelUrl = { url: `https://elida.lt/payment-failed`, method: "GET" };
-    const notificationUrl = { url: `https://hook.eu2.make.com/v5xjz6qi9ltm225himstcxn0jssqivu7`, method: "POST" };
+    const returnUrl = { url: returnUrl, method: "GET" };
+    const cancelUrl = { url: cancelUrl, method: "GET" };
+    const notificationUrl = { url: notificationUrl, method: "POST" };
 
     // ✅ Prepare request data (ONLY include address if shipping)
     const requestData = {
