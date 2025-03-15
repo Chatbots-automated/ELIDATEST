@@ -20,6 +20,7 @@ import PasswordReset from './pages/PasswordReset';
 import Wishlist from './pages/Wishlist';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentFailed from './pages/PaymentFailed';
+import WebhookListener from './components/WebhookListener';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -36,6 +37,7 @@ function App() {
     <AuthProvider>
       <Router>
         <ScrollToTop />
+        <WebhookListener />
         <div className="min-h-screen bg-elida-cream font-lato">
           <Navbar />
           <AnimatePresence mode="wait">
