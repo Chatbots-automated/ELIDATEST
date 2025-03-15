@@ -16,6 +16,7 @@ interface TransactionResponse {
 }
 
 const API_URL = 'https://api.maksekeskus.ee/v1/transactions';
+const WEBHOOK_URL = 'https://elida.lt/payment-webhook'; // ✅ Centralized webhook URL
 
 // ✅ Securely encode credentials
 const getEncodedCredentials = (): string => {
@@ -27,8 +28,7 @@ const getEncodedCredentials = (): string => {
     throw new Error('MakeCommerce credentials are missing.');
   }
 
-  const credentials = `${storeId}:${secretKey}`;
-  return btoa(credentials);
+  return btoa(`${storeId}:${secretKey}`);
 };
 
 export const createTransaction = async ({
@@ -45,19 +45,14 @@ export const createTransaction = async ({
     // ✅ Encode credentials securely
     const encodedCredentials = getEncodedCredentials();
 
-    // ✅ Prepare request data
+    // ✅ Step 1: Create the transaction
     const requestData = {
       transaction: {
         amount: amount.toFixed(2),
         currency: 'EUR',
         reference,
         merchant_data: `Order ID: ${reference}`,
-        recurring_required: false,
-        transaction_url: {
-          return_url: { url: `https://elida.lt/payment-success?reference=${reference}`, method: "GET" },
-          cancel_url: { url: `https://elida.lt/payment-failed`, method: "GET" },
-          notification_url: { url: `https://elida.lt/api/payment-webhook?reference=${reference}`, method: "POST" } // ✅ Sends Webhook to Server
-        }
+        recurring_required: false
       },
       customer: {
         email,
@@ -89,7 +84,6 @@ export const createTransaction = async ({
 
     console.log('🔄 Sending Payment Request:', JSON.stringify(requestData, null, 2));
 
-    // ✅ Make API request
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
@@ -99,20 +93,47 @@ export const createTransaction = async ({
       body: JSON.stringify(requestData)
     });
 
-    // ✅ Handle errors
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      console.error('🚨 Payment API Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorData,
-        requestData
-      });
-      throw new Error(errorData.message || `Payment request failed: ${response.statusText}`);
+      console.error('🚨 Payment API Error:', errorData);
+      throw new Error(errorData.message || 'Payment request failed.');
     }
 
     const data: TransactionResponse = await response.json();
     console.log('✅ Payment Response:', JSON.stringify(data, null, 2));
+
+    // ✅ Extract transaction ID
+    if (!data.id) throw new Error("Transaction ID missing in response.");
+    console.log(`🆔 Transaction ID: ${data.id}`);
+
+    // ✅ Step 2: Update transaction with final URLs
+    const returnUrl = `https://elida.lt/payment-success?reference=${reference}&transaction=${data.id}`;
+    const webhookUrl = `${WEBHOOK_URL}?reference=${reference}&transaction=${data.id}`;
+
+    const updateResponse = await fetch(`${API_URL}/${data.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${encodedCredentials}`
+      },
+      body: JSON.stringify({
+        transaction: {
+          transaction_url: {
+            return_url: { url: returnUrl, method: "GET" },
+            cancel_url: { url: `https://elida.lt/payment-failed`, method: "GET" },
+            notification_url: { url: webhookUrl, method: "POST" }
+          }
+        }
+      })
+    });
+
+    if (!updateResponse.ok) {
+      const updateError = await updateResponse.json().catch(() => ({}));
+      console.error('🚨 Failed to update transaction URLs:', updateError);
+      throw new Error('Failed to update transaction.');
+    }
+
+    console.log('✅ Transaction URLs updated successfully.');
 
     // ✅ Extract payment URL
     const paymentUrl = data.payment_methods?.other?.find(method => method.name === "redirect")?.url;
@@ -125,6 +146,36 @@ export const createTransaction = async ({
   }
 };
 
+// ✅ Fetch transaction details when redirected
+export const fetchTransactionDetails = async (transactionId: string): Promise<any> => {
+  try {
+    const encodedCredentials = getEncodedCredentials();
+    console.log(`🔍 Fetching transaction for ID: ${transactionId}`);
+
+    const response = await fetch(`${API_URL}/${transactionId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${encodedCredentials}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('🚨 Fetch Transaction Error:', errorData);
+      throw new Error('Transaction not found.');
+    }
+
+    const data = await response.json();
+    console.log(`✅ Transaction found:`, data);
+    return data;
+  } catch (error) {
+    console.error('❌ Transaction Fetch Error:', error);
+    return null;
+  }
+};
+
+// ✅ Verify payment status
 export const verifyPayment = async (transactionId: string): Promise<boolean> => {
   try {
     const encodedCredentials = getEncodedCredentials();
@@ -139,13 +190,8 @@ export const verifyPayment = async (transactionId: string): Promise<boolean> => 
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      console.error('🚨 Payment Verification Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorData,
-        transactionId
-      });
-      throw new Error(errorData.message || `Payment verification failed: ${response.statusText}`);
+      console.error('🚨 Payment Verification Error:', errorData);
+      throw new Error('Payment verification failed.');
     }
 
     const data = await response.json();
@@ -153,11 +199,7 @@ export const verifyPayment = async (transactionId: string): Promise<boolean> => 
 
     return data.status === 'completed';
   } catch (error) {
-    console.error('❌ Payment Verification Error:', {
-      error,
-      transactionId
-    });
-
-    throw new Error(error instanceof Error ? `Payment verification failed: ${error.message}` : 'Payment verification failed');
+    console.error('❌ Payment Verification Error:', error);
+    return false;
   }
 };
