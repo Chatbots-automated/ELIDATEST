@@ -4,9 +4,6 @@ interface TransactionRequest {
   amount: number;
   reference: string;
   email: string;
-  returnUrl: string;
-  cancelUrl: string;
-  notificationUrl: string;
   orderData: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>;
 }
 
@@ -20,13 +17,24 @@ interface TransactionResponse {
 
 const API_URL = 'https://api.maksekeskus.ee/v1/transactions';
 
+// ✅ Securely encode credentials
+const getEncodedCredentials = (): string => {
+  const storeId = import.meta.env.VITE_MAKECOMMERCE_STORE_ID;
+  const secretKey = import.meta.env.VITE_MAKECOMMERCE_SECRET_KEY;
+
+  if (!storeId || !secretKey) {
+    console.error('🚨 Missing MakeCommerce credentials.');
+    throw new Error('MakeCommerce credentials are missing.');
+  }
+
+  const credentials = `${storeId}:${secretKey}`;
+  return btoa(credentials);
+};
+
 export const createTransaction = async ({
   amount,
   reference,
   email,
-  returnUrl,
-  cancelUrl,
-  notificationUrl,
   orderData
 }: TransactionRequest): Promise<string> => {
   try {
@@ -34,16 +42,10 @@ export const createTransaction = async ({
     const ipResponse = await fetch('https://api64.ipify.org?format=json');
     const { ip } = await ipResponse.json();
 
-    // ✅ Encode credentials
-    const credentials = `${import.meta.env.VITE_MAKECOMMERCE_STORE_ID}:${import.meta.env.VITE_MAKECOMMERCE_SECRET_KEY}`;
-    const encodedCredentials = btoa(credentials);
+    // ✅ Encode credentials securely
+    const encodedCredentials = getEncodedCredentials();
 
-    // ✅ Use correct production URLs with methods
-    const returnUrl = { url: returnUrl, method: "GET" };
-    const cancelUrl = { url: cancelUrl, method: "GET" };
-    const notificationUrl = { url: notificationUrl, method: "POST" };
-
-    // ✅ Prepare request data (ONLY include address if shipping)
+    // ✅ Prepare request data
     const requestData = {
       transaction: {
         amount: amount.toFixed(2),
@@ -52,17 +54,17 @@ export const createTransaction = async ({
         merchant_data: `Order ID: ${reference}`,
         recurring_required: false,
         transaction_url: {
-          return_url: returnUrl,
-          cancel_url: cancelUrl,
-          notification_url: notificationUrl
+          return_url: { url: `https://elida.lt/payment-success?reference=${reference}`, method: "GET" },
+          cancel_url: { url: `https://elida.lt/payment-failed`, method: "GET" },
+          notification_url: { url: `https://elida.lt/api/payment-webhook?reference=${reference}`, method: "POST" } // ✅ Sends Webhook to Server
         }
       },
       customer: {
-        email: email || '',
+        email,
         country: 'LT',
         locale: 'LT',
         ip,
-        name: orderData?.shipping?.name || '',
+        name: orderData?.shipping?.name || 'Unknown',
         phone: orderData?.shipping?.phone || '',
         address: orderData?.shipping?.method === 'shipping'
           ? {
@@ -82,15 +84,9 @@ export const createTransaction = async ({
           price: (item.price || 0).toFixed(2),
           quantity: item.quantity || 1
         }))
-      },
-      app_info: {
-        module: 'ÉLIDA',
-        platform: 'React',
-        platform_version: '1.0'
       }
     };
 
-    // ✅ Log request data
     console.log('🔄 Sending Payment Request:', JSON.stringify(requestData, null, 2));
 
     // ✅ Make API request
@@ -116,8 +112,6 @@ export const createTransaction = async ({
     }
 
     const data: TransactionResponse = await response.json();
-
-    // ✅ Log successful response
     console.log('✅ Payment Response:', JSON.stringify(data, null, 2));
 
     // ✅ Extract payment URL
@@ -126,30 +120,21 @@ export const createTransaction = async ({
 
     return paymentUrl;
   } catch (error) {
-    console.error('❌ Payment Transaction Error:', {
-      error,
-      request: { amount, reference, email, orderData }
-    });
-
-    throw new Error(
-      error instanceof Error
-        ? `Payment transaction failed: ${error.message}`
-        : 'Payment transaction failed'
-    );
+    console.error('❌ Payment Transaction Error:', error);
+    throw new Error(error instanceof Error ? `Payment transaction failed: ${error.message}` : 'Payment transaction failed');
   }
 };
 
 export const verifyPayment = async (transactionId: string): Promise<boolean> => {
   try {
-    const credentials = `${import.meta.env.VITE_MAKECOMMERCE_STORE_ID}:${import.meta.env.VITE_MAKECOMMERCE_SECRET_KEY}`;
-    const encodedCredentials = btoa(credentials);
+    const encodedCredentials = getEncodedCredentials();
 
     const response = await fetch(`${API_URL}/${transactionId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Basic ${encodedCredentials}`
-      },
+      }
     });
 
     if (!response.ok) {
@@ -164,6 +149,8 @@ export const verifyPayment = async (transactionId: string): Promise<boolean> => 
     }
 
     const data = await response.json();
+    console.log(`✅ Payment status for ${transactionId}: ${data.status}`);
+
     return data.status === 'completed';
   } catch (error) {
     console.error('❌ Payment Verification Error:', {
@@ -171,10 +158,6 @@ export const verifyPayment = async (transactionId: string): Promise<boolean> => 
       transactionId
     });
 
-    throw new Error(
-      error instanceof Error
-        ? `Payment verification failed: ${error.message}`
-        : 'Payment verification failed'
-    );
+    throw new Error(error instanceof Error ? `Payment verification failed: ${error.message}` : 'Payment verification failed');
   }
 };
