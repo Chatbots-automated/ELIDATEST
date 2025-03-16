@@ -108,6 +108,7 @@ export const createTransaction = async ({
 
     // ✅ Step 2: Update transaction with final URLs
     const returnUrl = `https://elida.lt/payment-success?reference=${reference}&transaction=${data.id}`;
+    const cancelUrl = `https://elida.lt/payment-failed`;
     const webhookUrl = `${WEBHOOK_URL}?reference=${reference}&transaction=${data.id}`;
 
     const updateResponse = await fetch(`${API_URL}/${data.id}`, {
@@ -120,7 +121,7 @@ export const createTransaction = async ({
         transaction: {
           transaction_url: {
             return_url: { url: returnUrl, method: "GET" },
-            cancel_url: { url: `https://elida.lt/payment-failed`, method: "GET" },
+            cancel_url: { url: cancelUrl, method: "GET" },
             notification_url: { url: webhookUrl, method: "POST" }
           }
         }

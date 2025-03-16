@@ -5,6 +5,7 @@ import { ShoppingBag, CreditCard, Truck, MapPin, User, Mail, Phone, ArrowLeft, L
 import { useStore } from '../store/useStore';
 import { useAuth } from '../context/AuthContext';
 import { createTransaction } from '../services/paymentService';
+import { sendOrderWebhook } from '../services/orderWebhookService';
 
 interface FormData {
   firstName: string;
@@ -100,8 +101,13 @@ export default function Checkout() {
           email: form.email,
           phone: form.phone
         },
-        status: 'created'
+        status: 'created',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
+
+      // Send webhook before initiating payment
+      await sendOrderWebhook(orderData);
 
       const paymentUrl = await createTransaction({
         amount: getCartTotal(!!user),
