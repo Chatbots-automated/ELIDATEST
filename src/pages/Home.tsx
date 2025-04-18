@@ -61,7 +61,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="inline-block px-5 py-2 bg-elida-gold/20 backdrop-blur-sm text-elida-gold rounded-full text-sm font-medium mb-8 shimmer tracking-wider uppercase"
+              className="inline-block px-5 py-2 bg-elida-gold/20 backdrop-blur-sm text-elida-gold rounded-full text-sm font-medium mb-2 shimmer tracking-wider uppercase"
             >
               Soliariumų studija Panevėžyje
             </motion.span>
@@ -69,27 +69,19 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="text-4xl md:text-6xl text-white mb-10 leading-tight"
+              className="text-4xl md:text-5xl text-white mb-4"
               style={{ fontFamily: 'De Valencia' }}
             >
-              Atrask Tobulą <span className="text-transparent bg-clip-text bg-gold-gradient animate-gradient">Įdegį</span>
-</motion.h1>
-<motion.div 
-  initial={{ opacity: 0, y: 30 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.7, duration: 0.7 }}
-  className="flex items-center gap-4 mb-12"
->
-
-              <img 
-                src="/elida-logo.svg" 
-                alt="ÉLIDA" 
-                className="h-12 brightness-0 invert"
-              />
-              <span className="text-xl text-elida-beige">
-                - šiuolaikiška vieta Jūsų tobulam įdegiui
-              </span>
-            </motion.div>
+              ATRASK TOBULĄ ĮDEGĮ
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.7 }}
+              className="text-xl text-elida-beige mb-12"
+            >
+              ÉLIDA - šiuolaikiška vieta Jūsų tobulam įdegiui
+            </motion.p>
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
