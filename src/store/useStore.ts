@@ -87,6 +87,8 @@ export const useStore = create<StoreState>()(
       },
 
       updateCartItemQuantity: async (id, quantity, userId, selectedSize, selectedColor) => {
+        if (quantity < 1) return; // Prevent negative quantities
+
         // Update local state
         set((state) => ({
           cart: state.cart.map((item) =>

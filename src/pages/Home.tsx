@@ -69,18 +69,18 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="font-playfair text-6xl md:text-8xl text-white mb-10 leading-tight"
+              className="text-4xl md:text-6xl text-white mb-10 leading-tight"
+              style={{ fontFamily: 'De Valencia' }}
             >
-              Atrask Tobulą
-              <br />
-              <span className="text-transparent bg-clip-text bg-gold-gradient animate-gradient">Įdegį</span>
-            </motion.h1>
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.7 }}
-              className="flex items-center gap-4 mb-12"
-            >
+              Atrask Tobulą <span className="text-transparent bg-clip-text bg-gold-gradient animate-gradient">Įdegį</span>
+</motion.h1>
+<motion.div 
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.7, duration: 0.7 }}
+  className="flex items-center gap-4 mb-12"
+>
+
               <img 
                 src="/elida-logo.svg" 
                 alt="ÉLIDA" 

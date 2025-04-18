@@ -7,6 +7,16 @@
 @import '@fontsource/poppins/500.css';
 @import '@fontsource/poppins/600.css';
 
+@font-face {
+  font-family: 'De Valencia';
+  src: url('https://db.onlinewebfonts.com/t/8a59b9134a7c865a7e0d27e10f98df2a.eot');
+  src: url('https://db.onlinewebfonts.com/t/8a59b9134a7c865a7e0d27e10f98df2a.eot?#iefix') format('embedded-opentype'),
+       url('https://db.onlinewebfonts.com/t/8a59b9134a7c865a7e0d27e10f98df2a.woff2') format('woff2'),
+       url('https://db.onlinewebfonts.com/t/8a59b9134a7c865a7e0d27e10f98df2a.woff') format('woff'),
+       url('https://db.onlinewebfonts.com/t/8a59b9134a7c865a7e0d27e10f98df2a.ttf') format('truetype'),
+       url('https://db.onlinewebfonts.com/t/8a59b9134a7c865a7e0d27e10f98df2a.svg#De Valencia') format('svg');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
