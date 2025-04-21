@@ -78,7 +78,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.7 }}
-              className="flex flex-col sm:flex-row gap-5 mb-32"
+              className="flex flex-col sm:flex-row gap-5 mb-8"
             >
               <motion.div
                 whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(212, 175, 55, 0.3)" }}
@@ -107,7 +107,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.7 }}
-              className="text-xl md:text-3xl text-white whitespace-normal md:whitespace-nowrap overflow-hidden text-ellipsis"
+              className="text-lg md:text-2xl text-white mt-24 tracking-wider"
               style={{ fontFamily: 'De Valencia' }}
             >
               ÉLIDA - šiuolaikiška vieta Jūsų tobulam įdegiui
