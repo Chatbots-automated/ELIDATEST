@@ -39,8 +39,8 @@ export default function Home() {
           muted 
           loop 
           playsInline 
-          className="absolute w-full h-full object-cover object-center"
-          style={{ objectFit: 'cover', width: '100vw', height: '100vh' }}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectFit: 'cover', objectPosition: 'center 35%' }}
         >
           <source src="/IMG_3098.webm" type="video/webm" />
           Your browser does not support the video tag.
@@ -107,7 +107,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.7 }}
-              className="text-2xl md:text-5xl text-white whitespace-nowrap overflow-hidden text-ellipsis"
+              className="text-xl md:text-3xl text-white whitespace-normal md:whitespace-nowrap overflow-hidden text-ellipsis"
               style={{ fontFamily: 'De Valencia' }}
             >
               ÉLIDA - šiuolaikiška vieta Jūsų tobulam įdegiui
