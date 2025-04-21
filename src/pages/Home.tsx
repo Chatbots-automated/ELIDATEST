@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       {/* Hero Section with Video Background */}
-      <section className="relative h-screen flex items-center">
+      <section className="relative h-screen flex items-start pt-32 md:items-center md:pt-0">
         {/* Background Video */}
         <video 
           autoPlay 
@@ -61,7 +61,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="inline-block px-5 py-2 bg-elida-gold/20 backdrop-blur-sm text-elida-gold rounded-full text-sm font-medium mb-6 shimmer tracking-wider uppercase"
+              className="inline-block px-5 py-2 bg-elida-gold/20 backdrop-blur-sm text-elida-gold rounded-full text-sm font-medium mb-24 shimmer tracking-wider uppercase"
             >
               Soliariumų studija Panevėžyje
             </motion.span>
@@ -69,7 +69,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="text-2xl md:text-5xl text-white mb-4"
+              className="text-2xl md:text-5xl text-white mb-32"
               style={{ fontFamily: 'De Valencia' }}
             >
               ATRASK TOBULĄ ĮDEGĮ
@@ -78,7 +78,8 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.7 }}
-              className="text-xl text-elida-beige mb-12"
+              className="text-xl text-elida-beige mb-16 whitespace-nowrap overflow-hidden text-ellipsis"
+              style={{ fontFamily: 'De Valencia' }}
             >
               ÉLIDA - šiuolaikiška vieta Jūsų tobulam įdegiui
             </motion.p>
