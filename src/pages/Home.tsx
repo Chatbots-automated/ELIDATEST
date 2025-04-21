@@ -69,25 +69,16 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.7 }}
-              className="text-2xl md:text-5xl text-white mb-32"
+              className="text-2xl md:text-5xl text-white mb-16"
               style={{ fontFamily: 'De Valencia' }}
             >
               ATRASK TOBULĄ ĮDEGĮ
             </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.7 }}
-              className="text-xl text-elida-beige mb-16 whitespace-nowrap overflow-hidden text-ellipsis"
-              style={{ fontFamily: 'De Valencia' }}
-            >
-              ÉLIDA - šiuolaikiška vieta Jūsų tobulam įdegiui
-            </motion.p>
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.7 }}
-              className="flex flex-col sm:flex-row gap-5"
+              className="flex flex-col sm:flex-row gap-5 mb-32"
             >
               <motion.div
                 whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(212, 175, 55, 0.3)" }}
@@ -112,6 +103,15 @@ export default function Home() {
                 </Link>
               </motion.div>
             </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.7 }}
+              className="text-2xl md:text-5xl text-white whitespace-nowrap overflow-hidden text-ellipsis"
+              style={{ fontFamily: 'De Valencia' }}
+            >
+              ÉLIDA - šiuolaikiška vieta Jūsų tobulam įdegiui
+            </motion.h2>
           </motion.div>
         </div>
         <motion.div
@@ -134,8 +134,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
