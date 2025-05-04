@@ -25,13 +25,12 @@ const normalizeProduct = (data: any): Product => {
   return {
     id: data.id.toString(),
     name: data.name || '',
-    category: data.category || '',
     description: data.description || '',
     price: parsePrice(data.price),
-    sku: data.sku || '',
     imageurl: data.imageurl || DEFAULT_PRODUCT_IMAGE,
-    variants: data.variants || undefined,
-    features: data.features || undefined
+    // Set default values for required Product interface properties
+    category: '', // Empty string since we don't have categories
+    sku: '', // Empty string since we don't have SKUs
   };
 };
 
@@ -70,24 +69,6 @@ export const fetchProductById = async (productId: string): Promise<Product | nul
     return data ? normalizeProduct(data) : null;
   } catch (error) {
     console.error('Error fetching product:', error);
-    throw error;
-  }
-};
-
-export const fetchProductsByCategory = async (category: string): Promise<Product[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('category', category);
-
-    if (error) {
-      throw error;
-    }
-
-    return (data || []).map(normalizeProduct);
-  } catch (error) {
-    console.error('Error fetching products by category:', error);
     throw error;
   }
 };
