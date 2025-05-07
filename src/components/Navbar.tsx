@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, LogIn, LogOut, ExternalLink, UserCircle2, ShoppingBag, Heart } from 'lucide-react';
+import { Menu, X, LogIn, LogOut, ExternalLink, UserCircle2, ShoppingBag, Heart, CreditCard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import Cart from './Cart';
@@ -14,7 +14,6 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const { cart, wishlist } = useStore();
   
-  // Check if we're on the home page
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
@@ -30,6 +29,7 @@ export default function Navbar() {
     { name: 'Paslaugos', path: '/services' },
     { name: 'Galerija', path: '/gallery' },
     { name: 'Prekės', path: '/products' },
+    { name: 'Abonementai', path: '/subscriptions' },
     { name: 'Rezervuoti', path: '/booking' }
   ];
 

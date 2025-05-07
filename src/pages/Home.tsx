@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sun, Users, Clock, Sparkles, ChevronDown, Star } from 'lucide-react';
+import { Sun, Users, Clock, Sparkles, ChevronDown, Star, CreditCard } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import FeaturedProducts from '../components/FeaturedProducts';
 
@@ -100,6 +100,18 @@ export default function Home() {
                   className="inline-flex items-center justify-center px-10 py-4 bg-white/10 text-white backdrop-blur-sm rounded-full font-medium text-lg hover:bg-white/20 transition-all duration-300 border border-white/20"
                 >
                   Mūsų Paslaugos
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  to="/subscriptions"
+                  className="inline-flex items-center justify-center px-10 py-4 bg-white/10 text-white backdrop-blur-sm rounded-full font-medium text-lg hover:bg-white/20 transition-all duration-300 border border-white/20"
+                >
+                  <CreditCard className="h-5 w-5 mr-2" />
+                  Abonementai
                 </Link>
               </motion.div>
             </motion.div>

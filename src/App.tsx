@@ -20,6 +20,7 @@ import PasswordReset from './pages/PasswordReset';
 import Wishlist from './pages/Wishlist';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentFailed from './pages/PaymentFailed';
+import Subscriptions from './pages/Subscriptions';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -56,6 +57,7 @@ function App() {
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/payment-failed" element={<PaymentFailed />} />
+              <Route path="/subscriptions" element={<Subscriptions />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </AnimatePresence>
