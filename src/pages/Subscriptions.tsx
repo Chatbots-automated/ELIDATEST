@@ -9,6 +9,7 @@ interface Subscription {
   id: number;
   "Min kiekis": string;
   Kaina: string;
+  imageurl: string;
 }
 
 export default function Subscriptions() {
@@ -38,7 +39,6 @@ export default function Subscriptions() {
   }, []);
 
   const handleSubscriptionClick = (subscription: Subscription) => {
-    // Navigate to products page with subscription ID as query parameter
     navigate(`/products?subscription=${subscription.id}#subscriptions`);
   };
 
@@ -64,14 +64,14 @@ export default function Subscriptions() {
               className="text-center lg:text-left"
             >
               <h1 className="font-playfair text-4xl md:text-5xl text-gray-900 mb-6 leading-tight">
-                ÉLIDA Abonementai
+                Abonementai
               </h1>
               <div className="w-32 h-1 bg-gradient-to-r from-elida-gold to-elida-accent mx-auto lg:mx-0 mb-8"></div>
               <div className="prose prose-lg text-gray-600 mb-8">
                 <p>Įdegio minutės pigiau su ELIDA abonementais!</p>
-                <p>Mėgaukitės aukštos kokybės paslaugomis už dar geresnę kainą – kuo daugiau minučių įsigyjate, tuo daugiau sutaupote!</p>
-                
-                <h3 className="text-xl font-medium text-gray-900 mt-8 mb-4">💳 Minutės kaina su abonementu:</h3>
+                <p>Paslaugos mūsų, geros kainos Jūsų! Įsigiję abonomentą minutės kainą gaunate dar geresnę!</p>
+                <h3 className="text-xl font-medium text-gray-900 mt-8 mb-4">Įprasta minutės kaina : 0.70 € / min</h3>
+                <h3 className="text-xl font-medium text-gray-900 mt-8 mb-4"> Minutės kaina su abonementu:</h3>
                 <ul className="space-y-2 list-none p-0">
                   <li>30 min – tik 0.66 € / min</li>
                   <li>50 min – tik 0.60 € / min</li>
@@ -80,7 +80,7 @@ export default function Subscriptions() {
                   <li>150 min – vos 0.46 € / min</li>
                 </ul>
 
-                <p className="mt-8">⏳ Abonementai galioja neribotą laiką!</p>
+                <p className="mt-8"> Abonementai galioja neribotą laiką!</p>
                 <p>Pirkite dabar ir naudokitės kada tik norite – be jokių terminų!</p>
               </div>
             </motion.div>
@@ -112,6 +112,16 @@ export default function Subscriptions() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="relative bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
               >
+                {subscription.imageurl && (
+                  <div className="w-full h-48 overflow-hidden">
+                    <img
+                      src={subscription.imageurl}
+                      alt={`${subscription["Min kiekis"]} minučių abonementas`}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                )}
+                
                 <div className="p-8">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="p-2 bg-elida-gold/10 rounded-lg">

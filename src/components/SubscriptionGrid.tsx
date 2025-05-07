@@ -10,6 +10,7 @@ interface Subscription {
   id: number;
   "Min kiekis": string;
   Kaina: string;
+  imageurl: string;
 }
 
 export default function SubscriptionGrid() {
@@ -42,7 +43,6 @@ export default function SubscriptionGrid() {
   }, []);
 
   useEffect(() => {
-    // Scroll to subscriptions section if there's a highlighted subscription
     if (highlightedSubscriptionId && location.hash === '#subscriptions') {
       const element = document.getElementById('subscriptions');
       if (element) {
@@ -57,7 +57,7 @@ export default function SubscriptionGrid() {
       name: `${subscription["Min kiekis"]} minučių abonementas`,
       description: `Soliariumo abonementas ${subscription["Min kiekis"]} minučių`,
       price: parseFloat(subscription.Kaina),
-      imageurl: 'https://i.imgur.com/izJfzNy.png',
+      imageurl: subscription.imageurl || 'https://i.imgur.com/izJfzNy.png',
       quantity: 1,
       category: 'Abonementai',
       sku: `ABO-${subscription.id}`
@@ -91,6 +91,16 @@ export default function SubscriptionGrid() {
               isHighlighted ? 'ring-4 ring-elida-gold ring-opacity-50' : ''
             }`}
           >
+            {subscription.imageurl && (
+              <div className="w-full h-48 overflow-hidden">
+                <img
+                  src={subscription.imageurl}
+                  alt={`${subscription["Min kiekis"]} minučių abonementas`}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            )}
+            
             <div className="p-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 bg-elida-gold/10 rounded-lg">
