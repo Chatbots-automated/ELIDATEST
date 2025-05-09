@@ -136,11 +136,14 @@ export const useStore = create<StoreState>()(
 
       getCartTotal: (isLoggedIn) => {
         const state = get();
-        const subtotal = state.cart.reduce(
-          (total, item) => total + item.price * item.quantity,
-          0
-        );
-        return isLoggedIn ? subtotal * 0.85 : subtotal; // Apply 15% discount for logged-in users
+        const subtotal = state.cart.reduce((total, item) => {
+          // Check if the item is a subscription (based on category)
+          const isSubscription = item.category === 'Abonementai';
+          // Apply discount only for non-subscription items when logged in
+          const itemTotal = item.price * item.quantity;
+          return total + (isLoggedIn && !isSubscription ? itemTotal * 0.85 : itemTotal);
+        }, 0);
+        return subtotal;
       },
     }),
     {

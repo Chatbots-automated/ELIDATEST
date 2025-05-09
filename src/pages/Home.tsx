@@ -166,8 +166,9 @@ export default function Home() {
             {[
               {
                 icon: <Sun className="h-10 w-10" />,
-                title: "Premium Įranga",
-                description: "Naujausi soliariumai su pažangiausiomis technologijomis"
+                title: "MegaSun Įranga",
+                description: "Leis Jum pasiekti ir išlaikyti norimą įdegį",
+                image: "https://i.imgur.com/6J0D5p1.png"
               },
               {
                 icon: <Users className="h-10 w-10" />,
@@ -203,6 +204,15 @@ export default function Home() {
                 <p className="text-gray-600 group-hover:text-white/90">
                   {feature.description}
                 </p>
+                {feature.image && (
+                  <div className="mt-6">
+                    <img 
+                      src={feature.image} 
+                      alt={feature.title}
+                      className="w-full h-40 object-cover rounded-lg shadow-md"
+                    />
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>

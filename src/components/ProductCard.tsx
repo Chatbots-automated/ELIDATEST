@@ -19,6 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   const isWishlisted = wishlist.some((item) => item.id === product.id);
+  const isSubscription = product.category === 'Abonementai';
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     if (!product.imageurl || product.imageurl === '/elida-logo.svg') return;
@@ -43,7 +44,6 @@ export default function ProductCard({ product }: ProductCardProps) {
     });
   };
 
-  // Split description into categories
   const categorizeDescription = () => {
     const description = product.description;
     const points = description.split('.').filter(Boolean).map(point => point.trim());
@@ -68,12 +68,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const { features, usage, warnings, ingredients } = categorizeDescription();
 
-  // Calculate discounted price if user is logged in
   const discountPercentage = 15;
   const originalPrice = typeof product.price === 'number' ? 
     product.price : 
     parseFloat(String(product.price));
-  const discountedPrice = originalPrice * (1 - discountPercentage / 100);
+  const discountedPrice = isSubscription ? originalPrice : originalPrice * (1 - discountPercentage / 100);
   const formattedPrice = discountedPrice.toFixed(2);
 
   return (
@@ -173,7 +172,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
             <div className="flex flex-col">
-              {user ? (
+              {user && !isSubscription ? (
                 <>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold text-elida-gold">{formattedPrice}€</span>
@@ -189,15 +188,17 @@ export default function ProductCard({ product }: ProductCardProps) {
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold text-gray-900">{originalPrice.toFixed(2)}€</span>
                   </div>
-                  <div className="flex items-center gap-2 mt-1 bg-elida-gold/10 px-2 py-1 rounded-lg">
-                    <User className="h-4 w-4 text-elida-gold" />
-                    <div className="flex items-center gap-1">
-                      <span className="text-sm text-elida-gold font-medium line-through">{originalPrice.toFixed(2)}€</span>
-                      <span className="text-sm text-elida-gold font-medium">{formattedPrice}€</span>
-                      <span className="text-xs bg-elida-gold text-white px-2 py-0.5 rounded-full">-{discountPercentage}%</span>
+                  {!isSubscription && (
+                    <div className="flex items-center gap-2 mt-1 bg-elida-gold/10 px-2 py-1 rounded-lg">
+                      <User className="h-4 w-4 text-elida-gold" />
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm text-elida-gold font-medium line-through">{originalPrice.toFixed(2)}€</span>
+                        <span className="text-sm text-elida-gold font-medium">{formattedPrice}€</span>
+                        <span className="text-xs bg-elida-gold text-white px-2 py-0.5 rounded-full">-{discountPercentage}%</span>
+                      </div>
                     </div>
-                  </div>
-                  <span className="text-xs text-gray-500 mt-1">Prisijungusiems vartotojams</span>
+                  )}
+                  {!isSubscription && <span className="text-xs text-gray-500 mt-1">Prisijungusiems vartotojams</span>}
                 </>
               )}
             </div>
@@ -232,11 +233,11 @@ export default function ProductCard({ product }: ProductCardProps) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", duration: 0.5 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              className="fixed inset-0 z-50 flex items-start justify-center p-4 overflow-y-auto"
               onClick={() => setShowQuickView(false)}
             >
               <div 
-                className="relative w-full max-w-5xl bg-gradient-to-br from-elida-cream to-white rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
+                className="relative w-full max-w-5xl bg-gradient-to-br from-elida-cream to-white rounded-2xl overflow-hidden shadow-2xl my-8"
                 onClick={e => e.stopPropagation()}
               >
                 <motion.button
@@ -248,7 +249,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                   <X className="h-6 w-6" />
                 </motion.button>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 h-full overflow-hidden">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="p-8 lg:p-12">
                     <motion.img
                       initial={{ scale: 1.1, opacity: 0 }}
@@ -257,7 +258,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                       src={product.imageurl}
                       alt={product.name}
                       onError={handleImageError}
-                      className={`w-full h-[500px] rounded-xl shadow-lg ${
+                      className={`w-full h-[300px] md:h-[400px] rounded-xl shadow-lg ${
                         imageError || product.imageurl === '/elida-logo.svg' 
                           ? 'object-contain p-8 bg-elida-cream/50' 
                           : 'object-cover'
@@ -265,7 +266,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     />
                   </div>
 
-                  <div className="p-8 lg:p-12 border-l border-elida-gold/10 overflow-y-auto bg-white/50 backdrop-blur-sm">
+                  <div className="p-8 lg:p-12 border-l border-elida-gold/10 overflow-y-auto bg-white/50 backdrop-blur-sm max-h-[80vh]">
                     <div className="space-y-8">
                       <motion.div 
                         initial={{ opacity: 0, y: 20 }}
@@ -429,7 +430,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex flex-col">
-                            {user ? (
+                            {user && !isSubscription ? (
                               <>
                                 <div className="flex items-center gap-2 mb-1">
                                   <span className="text-3xl font-playfair text-gray-900">{formattedPrice}€</span>
@@ -445,15 +446,17 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 <div className="flex items-center gap-2">
                                   <span className="text-3xl font-playfair text-gray-900">{originalPrice.toFixed(2)}€</span>
                                 </div>
-                                <div className="flex items-center gap-2 mt-2 bg-elida-gold/10 px-3 py-2 rounded-lg">
-                                  <User className="h-5 w-5 text-elida-gold" />
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-sm text-elida-gold font-medium line-through">{originalPrice.toFixed(2)}€</span>
-                                    <span className="text-sm text-elida-gold font-medium">{formattedPrice}€</span>
-                                    <span className="text-xs bg-elida-gold text-white px-2 py-0.5 rounded-full">-{discountPercentage}%</span>
+                                {!isSubscription && (
+                                  <div className="flex items-center gap-2 mt-2 bg-elida-gold/10 px-3 py-2 rounded-lg">
+                                    <User className="h-5 w-5 text-elida-gold" />
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-sm text-elida-gold font-medium line-through">{originalPrice.toFixed(2)}€</span>
+                                      <span className="text-sm text-elida-gold font-medium">{formattedPrice}€</span>
+                                      <span className="text-xs bg-elida-gold text-white px-2 py-0.5 rounded-full">-{discountPercentage}%</span>
+                                    </div>
                                   </div>
-                                </div>
-                                <span className="text-xs text-gray-500 mt-1">Prisijungusiems vartotojams</span>
+                                )}
+                                {!isSubscription && <span className="text-xs text-gray-500 mt-1">Prisijungusiems vartotojams</span>}
                               </>
                             )}
                           </div>
