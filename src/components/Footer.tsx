@@ -15,9 +15,6 @@ export default function Footer() {
                 className="h-12 brightness-0 invert"
               />
             </div>
-            <p className="text-gray-400">
-              Aukščiausios kokybės soliariumai ir profesionalus aptarnavimas Panevėžyje.
-            </p>
           </div>
 
           <div>

@@ -138,27 +138,6 @@ export default function Subscriptions() {
                     </div>
                   </div>
                   
-                  <ul className="space-y-4 mb-8">
-                    <li className="flex items-center gap-3">
-                      <div className="p-1 bg-green-100 rounded-full">
-                        <Check className="h-4 w-4 text-green-600" />
-                      </div>
-                      <span className="text-gray-600">Galioja neribotą laiką</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <div className="p-1 bg-green-100 rounded-full">
-                        <Check className="h-4 w-4 text-green-600" />
-                      </div>
-                      <span className="text-gray-600">Profesionalios konsultacijos</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <div className="p-1 bg-green-100 rounded-full">
-                        <Check className="h-4 w-4 text-green-600" />
-                      </div>
-                      <span className="text-gray-600">Galimybė dalintis su draugais</span>
-                    </li>
-                  </ul>
-                  
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}

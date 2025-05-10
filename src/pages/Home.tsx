@@ -150,15 +150,6 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            <h2 className="font-playfair text-4xl md:text-5xl text-gray-900 mb-6">
-              Kodėl Rinktis <span className="flex items-center justify-center gap-2 inline-block">
-                <img 
-                  src="/elida-logo.svg" 
-                  alt="ÉLIDA" 
-                  className="h-12 md:h-16 inline-block"
-                />
-              </span>?
-            </h2>
             <div className="w-32 h-1 bg-gradient-to-r from-elida-gold to-elida-accent mx-auto" />
           </motion.div>
 
