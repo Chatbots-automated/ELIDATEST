@@ -91,7 +91,7 @@ export default function Subscriptions() {
               className="relative"
             >
               <img
-                src="https://i.imgur.com/izJfzNy.png"
+                src="https://i.imgur.com/oNHaDrY.jpeg"
                 alt="ÉLIDA Abonementai"
                 className="rounded-2xl shadow-lg w-full"
               />

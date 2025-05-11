@@ -16,19 +16,22 @@ export default function Home() {
       name: "Mantas Mingėla",
       text: "Viskas super 😊 Moderni aplinka, švarios ir tvarkingos patalpos, o personalas itin draugiškas ir profesionalus. Soliariumų įranga aukštos kokybės, todėl procedūros ne tik veiksmingos, bet ir labai komfortiškos. Malonu, kad didelis dėmesys skiriamas higienai ir klientų gerovei. Apsilankymas čia visada pakelia nuotaiką ir suteikia sveiko spindesio odai. Tikrai rekomenduoju visiems, ieškantiems kokybiškų paslaugų ir jaukios atmosferos!",
       rating: 5,
-      highlight: "Moderni aplinka ir profesionalus aptarnavimas"
+      highlight: "Moderni aplinka ir profesionalus aptarnavimas",
+      image: "https://i.imgur.com/cg9ZuQh.png"
     },
     {
       name: "Roberta Jakubenaite",
       text: "Pats gražiausias! Švariausias! Maksimali prabanga ir malonus aptarnavimas! Sėkmės! Įdegis laikosi labai gerai!",
       rating: 5,
-      highlight: "Maksimali prabanga"
+      highlight: "Maksimali prabanga",
+      image: "https://i.imgur.com/55LjdQa.png"
     },
     {
       name: "Kristina Lisauskienė",
       text: "Labai patiko. Maloniai aptarnavo. Jaučiasi iš karto, kad buvau soliariume 🤣👌 Grįšiu dar ne kartą. Rekomenduoju 100%",
       rating: 5,
-      highlight: "Puikus rezultatas"
+      highlight: "Puikus rezultatas",
+      image: "https://i.imgur.com/3H04Jel.png"
     },
     {
       name: "Loreta Petrauskiene",
@@ -270,9 +273,17 @@ export default function Home() {
                 <p className="text-gray-600 mb-8 italic text-lg leading-relaxed">"{testimonial.text}"</p>
                 
                 <div className="flex items-center">
-                  <div className="h-10 w-10 bg-elida-gold/10 rounded-full flex items-center justify-center">
-                    <User className="h-5 w-5 text-elida-gold" />
-                  </div>
+                  {testimonial.image ? (
+                    <img 
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="h-12 w-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-12 w-12 bg-elida-gold/10 rounded-full flex items-center justify-center">
+                      <User className="h-6 w-6 text-elida-gold" />
+                    </div>
+                  )}
                   <div className="ml-4">
                     <p className="font-medium text-gray-900">{testimonial.name}</p>
                     <p className="text-sm text-elida-gold">Google atsiliepimai</p>
