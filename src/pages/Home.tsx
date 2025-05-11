@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sun, Users, Clock, Sparkles, ChevronDown, Star, CreditCard } from 'lucide-react';
+import { Sun, Users, Clock, Sparkles, ChevronDown, Star, CreditCard, Quote, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import FeaturedProducts from '../components/FeaturedProducts';
 
@@ -13,19 +13,34 @@ export default function Home() {
 
   const testimonials = [
     {
-      name: "Laura K.",
-      text: "Puiki aplinka, profesionalus aptarnavimas ir aukščiausios kokybės įranga. Tikrai rekomenduoju!",
-      rating: 5
+      name: "Mantas Mingėla",
+      text: "Viskas super 😊 Moderni aplinka, švarios ir tvarkingos patalpos, o personalas itin draugiškas ir profesionalus. Soliariumų įranga aukštos kokybės, todėl procedūros ne tik veiksmingos, bet ir labai komfortiškos. Malonu, kad didelis dėmesys skiriamas higienai ir klientų gerovei. Apsilankymas čia visada pakelia nuotaiką ir suteikia sveiko spindesio odai. Tikrai rekomenduoju visiems, ieškantiems kokybiškų paslaugų ir jaukios atmosferos!",
+      rating: 5,
+      highlight: "Moderni aplinka ir profesionalus aptarnavimas"
     },
     {
-      name: "Tomas M.",
-      text: "Geriausias soliariumas Panevėžyje. Visada išeinu su puikiu įdegiu ir gera nuotaika.",
-      rating: 5
+      name: "Roberta Jakubenaite",
+      text: "Pats gražiausias! Švariausias! Maksimali prabanga ir malonus aptarnavimas! Sėkmės! Įdegis laikosi labai gerai!",
+      rating: 5,
+      highlight: "Maksimali prabanga"
     },
     {
-      name: "Greta P.",
-      text: "Labai patogi rezervacijos sistema ir malonus personalas. Visada grįžtu!",
-      rating: 5
+      name: "Kristina Lisauskienė",
+      text: "Labai patiko. Maloniai aptarnavo. Jaučiasi iš karto, kad buvau soliariume 🤣👌 Grįšiu dar ne kartą. Rekomenduoju 100%",
+      rating: 5,
+      highlight: "Puikus rezultatas"
+    },
+    {
+      name: "Loreta Petrauskiene",
+      text: "Labai patiko. Be galo malonus aptarnaujantis personalas, švara, dėmesys klientui. Rekomenduoju visu 100%. Būtinai apsilankykite ❤️",
+      rating: 5,
+      highlight: "Ypatingas dėmesys klientui"
+    },
+    {
+      name: "Kristina Gurskiene",
+      text: "Labai gražus ir tvarkingas soliariumas. Labai paslaugi ir mandagi darbuotoja, išvalė soliariumą kruopščiai ir priminė kaip naudotis. Didžiausia pagarba darbuotojai už tokį malonų sutikimą ir aptarnavimą, net norisi sugrįžti 🤗 Gerų Jums darbų ir gerų klientų 🌼",
+      rating: 5,
+      highlight: "Kruopštumas ir profesionalumas"
     }
   ];
 
@@ -227,8 +242,8 @@ export default function Home() {
             <div className="w-32 h-1 bg-gradient-to-r from-elida-gold to-elida-accent mx-auto" />
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {testimonials.map((testimonial, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {testimonials.slice(0, 3).map((testimonial, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -236,15 +251,33 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ y: -5, boxShadow: "0 10px 25px -3px rgba(212, 175, 55, 0.2)" }}
-                className="bg-white/80 backdrop-blur-sm p-10 rounded-2xl shadow-md border border-elida-gold/10 transition-all duration-300"
+                className="bg-white/80 backdrop-blur-sm p-10 rounded-2xl shadow-md border border-elida-gold/10 transition-all duration-300 relative overflow-hidden"
               >
+                <Quote className="absolute top-4 right-4 h-12 w-12 text-elida-gold/10" />
+                
                 <div className="flex mb-5">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="h-5 w-5 text-elida-gold fill-elida-gold" />
                   ))}
                 </div>
+
+                <div className="mb-6">
+                  <span className="inline-block px-4 py-2 bg-elida-gold/5 text-elida-gold rounded-full text-sm font-medium">
+                    {testimonial.highlight}
+                  </span>
+                </div>
+
                 <p className="text-gray-600 mb-8 italic text-lg leading-relaxed">"{testimonial.text}"</p>
-                <p className="font-medium text-gray-900">{testimonial.name}</p>
+                
+                <div className="flex items-center">
+                  <div className="h-10 w-10 bg-elida-gold/10 rounded-full flex items-center justify-center">
+                    <User className="h-5 w-5 text-elida-gold" />
+                  </div>
+                  <div className="ml-4">
+                    <p className="font-medium text-gray-900">{testimonial.name}</p>
+                    <p className="text-sm text-elida-gold">Google atsiliepimai</p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>

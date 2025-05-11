@@ -64,20 +64,20 @@ export default function Subscriptions() {
               className="text-center lg:text-left"
             >
               <h1 className="font-playfair text-4xl md:text-5xl text-gray-900 mb-6 leading-tight">
-                Abonementai
+                ABONOMENTAI
               </h1>
               <div className="w-32 h-1 bg-gradient-to-r from-elida-gold to-elida-accent mx-auto lg:mx-0 mb-8"></div>
               <div className="prose prose-lg text-gray-600 mb-8">
-                <p>Įdegio minutės pigiau su ELIDA abonementais!</p>
+                
                 <p>Paslaugos mūsų, geros kainos Jūsų! Įsigiję abonomentą minutės kainą gaunate dar geresnę!</p>
-                <h3 className="text-xl font-medium text-gray-900 mt-8 mb-4">Įprasta minutės kaina : 0.70 € / min</h3>
+                <h3 className="text-xl font-medium text-gray-900 mt-8 mb-4">Įprasta minutės kaina : 0.80 € / min</h3>
                 <h3 className="text-xl font-medium text-gray-900 mt-8 mb-4"> Minutės kaina su abonementu:</h3>
                 <ul className="space-y-2 list-none p-0">
-                  <li>30 min – tik 0.66 € / min</li>
-                  <li>50 min – tik 0.60 € / min</li>
-                  <li>70 min – tik 0.57 € / min</li>
-                  <li>100 min – tik 0.50 € / min</li>
-                  <li>150 min – vos 0.46 € / min</li>
+                  <li>30 min – tik 0.76 € / min</li>
+                  <li>50 min – tik 0.70 € / min</li>
+                  <li>70 min – tik 0.67 € / min</li>
+                  <li>100 min – tik 0.60 € / min</li>
+                  <li>150 min – vos 0.56 € / min</li>
                 </ul>
 
                 <p className="mt-8"> Abonementai galioja neribotą laiką!</p>
