@@ -35,7 +35,7 @@ export default function Products() {
             className="text-center mb-16"
           >
             <h2 className="font-playfair text-3xl text-gray-900 mb-4">
-              Abonementai
+              ABONOMENTAI
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-elida-gold to-elida-accent mx-auto mb-6"></div>
             <p className="text-gray-600">
